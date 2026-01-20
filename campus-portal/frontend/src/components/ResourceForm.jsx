@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function ResourceForm() {
+function ResourceForm({ onResourceAdded }) {
   const [resource, setResource] = useState({
     name: "",
     category: "",
@@ -9,27 +9,101 @@ function ResourceForm() {
   });
 
   const handleChange = (e) => {
-    setResource({ ...resource, [e.target.name]: e.target.value });
+    setResource({
+      ...resource,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const existing = JSON.parse(localStorage.getItem("resources")) || [];
-    existing.push(resource);
-    localStorage.setItem("resources", JSON.stringify(existing));
+    try {
+      const res = await fetch("http://localhost:5000/api/resources", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resource),
+      });
 
-    alert("Resource Added Successfully!");
-    setResource({ name: "", category: "", availability: "", contact: "" });
+      if (!res.ok) {
+        throw new Error("Failed to add resource");
+      }
+
+      setResource({
+        name: "",
+        category: "",
+        availability: "",
+        contact: "",
+      });
+
+      if (onResourceAdded) {
+        onResourceAdded();
+      }
+
+      alert("Resource added successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Error adding resource");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form">
-      <input name="name" placeholder="Resource Name" value={resource.name} onChange={handleChange} required />
-      <input name="category" placeholder="Category" value={resource.category} onChange={handleChange} required />
-      <input name="availability" placeholder="Free / Borrow" value={resource.availability} onChange={handleChange} required />
-      <input name="contact" placeholder="Contact Info" value={resource.contact} onChange={handleChange} required />
-      <button>Add Resource</button>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-gray-900 border border-gray-800 rounded-xl p-6 max-w-lg space-y-4"
+    >
+      <h3 className="text-xl font-semibold text-sky-400">
+        Add a Resource
+      </h3>
+
+      <input
+        type="text"
+        name="name"
+        placeholder="Resource Name"
+        value={resource.name}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
+      />
+
+      <input
+        type="text"
+        name="category"
+        placeholder="Category (Books / Notes / Lab Items)"
+        value={resource.category}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
+      />
+
+      <input
+        type="text"
+        name="availability"
+        placeholder="Availability (Free / Borrow)"
+        value={resource.availability}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
+      />
+
+      <input
+        type="text"
+        name="contact"
+        placeholder="Contact Information"
+        value={resource.contact}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
+      />
+
+      <button
+        type="submit"
+        className="w-full bg-sky-500 hover:bg-sky-600 text-black font-semibold py-2 rounded-lg transition"
+      >
+        Add Resource
+      </button>
     </form>
   );
 }
