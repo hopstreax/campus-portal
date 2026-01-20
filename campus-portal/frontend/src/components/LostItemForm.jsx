@@ -1,36 +1,87 @@
 import { useState } from "react";
 
-function LostItemForm() {
-  const [item, setItem] = useState({
-    itemName: "",
+function LostItemForm({ onAdded }) {
+  const [form, setForm] = useState({
+    item_name: "",
     location: "",
     status: "",
     contact: "",
   });
 
-  const handleChange = (e) => {
-    setItem({ ...item, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
 
-    const existing = JSON.parse(localStorage.getItem("lostItems")) || [];
-    existing.push(item);
-    localStorage.setItem("lostItems", JSON.stringify(existing));
+    await fetch("http://localhost:5000/api/lostfound", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-    alert("Item Reported!");
-    setItem({ itemName: "", location: "", status: "", contact: "" });
+    setForm({
+      item_name: "",
+      location: "",
+      status: "",
+      contact: "",
+    });
+
+    onAdded();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form">
-      <input name="itemName" placeholder="Item Name" value={item.itemName} onChange={handleChange} required />
-      <input name="location" placeholder="Location" value={item.location} onChange={handleChange} required />
-      <input name="status" placeholder="Lost / Found" value={item.status} onChange={handleChange} required />
-      <input name="contact" placeholder="Contact Info" value={item.contact} onChange={handleChange} required />
-      <button>Report Item</button>
-    </form>
+    <div className="card shadow-sm mb-4">
+      <div className="card-body">
+        <h5 className="card-title mb-3">Report Item</h5>
+
+        <form onSubmit={submit}>
+          <input
+            className="form-control mb-3"
+            placeholder="Item Name"
+            value={form.item_name}
+            onChange={(e) =>
+              setForm({ ...form, item_name: e.target.value })
+            }
+            required
+          />
+
+          <input
+            className="form-control mb-3"
+            placeholder="Location (Library, Canteen, etc.)"
+            value={form.location}
+            onChange={(e) =>
+              setForm({ ...form, location: e.target.value })
+            }
+            required
+          />
+
+          <select
+            className="form-select mb-3"
+            value={form.status}
+            onChange={(e) =>
+              setForm({ ...form, status: e.target.value })
+            }
+            required
+          >
+            <option value="">Select Status</option>
+            <option value="Lost">Lost</option>
+            <option value="Found">Found</option>
+          </select>
+
+          <input
+            className="form-control mb-3"
+            placeholder="Contact Information"
+            value={form.contact}
+            onChange={(e) =>
+              setForm({ ...form, contact: e.target.value })
+            }
+            required
+          />
+
+          <button className="btn btn-primary w-100">
+            Report Item
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 

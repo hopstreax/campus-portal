@@ -1,110 +1,52 @@
 import { useState } from "react";
 
-function ResourceForm({ onResourceAdded }) {
-  const [resource, setResource] = useState({
+function ResourceForm({ onAdded }) {
+  const [form, setForm] = useState({
     name: "",
     category: "",
     availability: "",
     contact: "",
   });
 
-  const handleChange = (e) => {
-    setResource({
-      ...resource,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/api/resources", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(resource),
-      });
+    await fetch("http://localhost:5000/api/resources", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to add resource");
-      }
-
-      setResource({
-        name: "",
-        category: "",
-        availability: "",
-        contact: "",
-      });
-
-      if (onResourceAdded) {
-        onResourceAdded();
-      }
-
-      alert("Resource added successfully!");
-    } catch (error) {
-      console.error(error);
-      alert("Error adding resource");
-    }
+    setForm({ name: "", category: "", availability: "", contact: "" });
+    onAdded();
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-gray-900 border border-gray-800 rounded-xl p-6 max-w-lg space-y-4"
-    >
-      <h3 className="text-xl font-semibold text-sky-400">
-        Add a Resource
-      </h3>
+    <div className="card shadow-sm mb-4">
+      <div className="card-body">
+        <h5 className="card-title mb-3">Add Resource</h5>
 
-      <input
-        type="text"
-        name="name"
-        placeholder="Resource Name"
-        value={resource.name}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
-      />
+        <form onSubmit={submit}>
+          <input className="form-control mb-3" placeholder="Resource Name"
+            value={form.name}
+            onChange={e => setForm({ ...form, name: e.target.value })} />
 
-      <input
-        type="text"
-        name="category"
-        placeholder="Category (Books / Notes / Lab Items)"
-        value={resource.category}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
-      />
+          <input className="form-control mb-3" placeholder="Category"
+            value={form.category}
+            onChange={e => setForm({ ...form, category: e.target.value })} />
 
-      <input
-        type="text"
-        name="availability"
-        placeholder="Availability (Free / Borrow)"
-        value={resource.availability}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
-      />
+          <input className="form-control mb-3" placeholder="Free / Borrow"
+            value={form.availability}
+            onChange={e => setForm({ ...form, availability: e.target.value })} />
 
-      <input
-        type="text"
-        name="contact"
-        placeholder="Contact Information"
-        value={resource.contact}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-sky-500"
-      />
+          <input className="form-control mb-3" placeholder="Contact"
+            value={form.contact}
+            onChange={e => setForm({ ...form, contact: e.target.value })} />
 
-      <button
-        type="submit"
-        className="w-full bg-sky-500 hover:bg-sky-600 text-black font-semibold py-2 rounded-lg transition"
-      >
-        Add Resource
-      </button>
-    </form>
+          <button className="btn btn-primary w-100">Add Resource</button>
+        </form>
+      </div>
+    </div>
   );
 }
 
