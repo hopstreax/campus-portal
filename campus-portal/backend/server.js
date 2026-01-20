@@ -12,5 +12,5 @@ app.use("/api/resources", resourceRoutes);
 app.use("/api/lostfound", lostFoundRoutes);
 
 app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+  console.log("Backend running on http://localhost:5000");
 });
