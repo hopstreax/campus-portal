@@ -135,7 +135,7 @@ function About() {
       </div>
 
       {/* Footer */}
-      <div className="text-center mt-4 text-muted">
+      <div className="text-center mt-6 text-muted">
         <small>
           Developed as an academic project at ITER, SOA University,
           Bhubaneswar.
