@@ -1,36 +1,115 @@
-/* LIGHT MODE (default) */
+/* =========================
+   LIGHT MODE
+========================= */
+
 body.light-mode {
   background-color: #f8f9fa;
   color: #212529;
 }
 
-/* DARK MODE */
+
+/* =========================
+   DARK MODE BASE
+========================= */
+
 body.dark-mode {
   background-color: #121212;
   color: #e9ecef;
 }
 
-/* Cards */
+
+/* =========================
+   TEXT FIXES (CRITICAL)
+========================= */
+
+.dark-mode p,
+.dark-mode span,
+.dark-mode small,
+.dark-mode label,
+.dark-mode li {
+  color: #e9ecef !important;
+}
+
+.dark-mode .text-muted {
+  color: #adb5bd !important;
+}
+
+.dark-mode .text-dark {
+  color: #ffffff !important;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
 .dark-mode .card {
   background-color: #1e1e1e;
   color: #e9ecef;
   border-color: #2c2c2c;
 }
 
-/* Navbar override */
+.dark-mode .card-title {
+  color: #ffffff;
+}
+
+.dark-mode .card-text {
+  color: #ced4da;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
 .dark-mode .navbar {
   background-color: #000 !important;
 }
 
-/* Inputs */
+
+/* =========================
+   FORMS
+========================= */
+
 .dark-mode .form-control,
 .dark-mode .form-select {
   background-color: #2a2a2a;
-  color: #fff;
+  color: #ffffff;
   border-color: #444;
 }
 
-/* Badges */
+.dark-mode .form-control::placeholder {
+  color: #bbb;
+}
+
+
+/* =========================
+   HEADINGS
+========================= */
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+  color: #ffffff;
+}
+
+
+/* =========================
+   BADGES
+========================= */
+
 .dark-mode .badge {
-  opacity: 0.9;
+  opacity: 0.95;
+}
+
+
+/* =========================
+   LINKS
+========================= */
+
+.dark-mode a {
+  color: #9ecbff;
 }
