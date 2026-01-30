@@ -1,0 +1,36 @@
+/* LIGHT MODE (default) */
+body.light-mode {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* DARK MODE */
+body.dark-mode {
+  background-color: #121212;
+  color: #e9ecef;
+}
+
+/* Cards */
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #e9ecef;
+  border-color: #2c2c2c;
+}
+
+/* Navbar override */
+.dark-mode .navbar {
+  background-color: #000 !important;
+}
+
+/* Inputs */
+.dark-mode .form-control,
+.dark-mode .form-select {
+  background-color: #2a2a2a;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Badges */
+.dark-mode .badge {
+  opacity: 0.9;
+}
